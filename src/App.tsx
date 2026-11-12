@@ -1,6 +1,23 @@
-import { ContactPage } from './ContackPage';
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import { ContactPage, ContactPageAction } from './ContackPage';
+import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom';
+import { ThankYou } from './ThankYou';
+
+const myRouterTree = createBrowserRouter([
+  {
+    path: '/',
+    element: <Navigate to="/contact" />,
+  },
+  {
+    path: '/contact',
+    element: <ContactPage />,
+    action: ContactPageAction,
+  },
+  {
+    path: '/thankyou/:name',
+    element: <ThankYou />,
+  },
+]);
 
 export function App() {
-  return <ContactPage />;
+  return <RouterProvider router={myRouterTree} />;
 }
