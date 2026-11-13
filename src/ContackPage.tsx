@@ -1,6 +1,8 @@
 //import { FormEvent } from 'react';
 import { redirect } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { FieldError, useForm } from 'react-hook-form';
+import { error } from 'console';
+import { ValidationError } from './ValidationError';
 
 type Contact = {
   name: string;
@@ -22,6 +24,10 @@ export function ContactPage() {
     console.log('Submitted details:', data);
   };
 
+  function getEditorStyle(email: FieldError | undefined): import("react").ReactNode {
+    throw new Error('Function not implemented.');
+  }
+
   // function handleSubmit(e: FormEvent<HTMLFormElement>) {
   //   e.preventDefault();
   //   const formData = new FormData(e.currentTarget);
@@ -41,7 +47,18 @@ export function ContactPage() {
       <form>
         <div className={fieldStyle}>
           <label htmlFor="name">Your name</label>
-          <input type="text" id="name" {...register('name', { required: true, minLength: 5 })} />
+          <input
+            type="text"
+            id="name"
+            {...register('email', {
+              required: 'You must enter your email address',
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: 'Entered value does not match email format',
+              },
+            })}
+          />
+          className={getEditorStyle(errors.email)}
         </div>
         <div className={fieldStyle}>
           <label htmlFor="email">Your email address</label>
