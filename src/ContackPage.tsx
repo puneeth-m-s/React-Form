@@ -1,26 +1,38 @@
-import { FormEvent } from 'react';
+//import { FormEvent } from 'react';
 import { redirect } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+
 type Contact = {
   name: string;
   email: string;
   reason: string;
   notes: string;
 };
+
 export function ContactPage() {
   //const [contact, setContact] = useState<Contact>({ name: '', email: '', reason: '', notes: '' });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+  } = useForm<Contact>();
   const fieldStyle = 'flex flex-col mb-2';
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const contact = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      reason: formData.get('reason'),
-      notes: formData.get('notes'),
-    };
-    console.log('Submitted default are  ', contact);
-  }
+  const onSubmit = (data: Contact) => {
+    console.log('Submitted details:', data);
+  };
+
+  // function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  //   e.preventDefault();
+  //   const formData = new FormData(e.currentTarget);
+  //   const contact = {
+  //     name: formData.get('name'),
+  //     email: formData.get('email'),
+  //     reason: formData.get('reason'),
+  //     notes: formData.get('notes'),
+  //   };
+  //   console.log('Submitted default are  ', contact);
+  // }
 
   return (
     <div className="flex flex-col py-10 max-w-md mx-auto">
@@ -29,15 +41,19 @@ export function ContactPage() {
       <form>
         <div className={fieldStyle}>
           <label htmlFor="name">Your name</label>
-          <input type="text" id="name" name="name" />
+          <input type="text" id="name" {...register('name', { required: true, minLength: 5 })} />
         </div>
         <div className={fieldStyle}>
           <label htmlFor="email">Your email address</label>
-          <input type="email" id="email" name="email" />
+          <input
+            type="email"
+            id="email"
+            {...register('email', { required: true, minLength: 19 })}
+          />
         </div>
         <div className={fieldStyle}>
           <label htmlFor="reason">Reason you need to contact us</label>
-          <select id="reason" name="reason">
+          <select id="reason" {...register('reason', { required: true, minLength: 12 })}>
             <option value=""></option>
             <option value="Support">Support</option>
             <option value="Feedback">Feedback</option>
@@ -46,12 +62,18 @@ export function ContactPage() {
         </div>
         <div className={fieldStyle}>
           <label htmlFor="notes">Additional notes</label>
-          <textarea id="notes" name="notes" />
+          <textarea id="notes" {...register('notes', { required: true, minLength: 15 })} />
         </div>
         <div>
-          <button type="submit" className="mt-2 h-10 px-6 font-semibold bg-black text-white">
-            Submit
+          <button
+            type="submit"
+            className="mt-2 h-10 px-6 font-semibold bg-black text-white"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Submitting...' : 'Submit'}
           </button>
+          {isSubmitSuccessful && <p>Thanks for getting in touch!</p>}
+          {errors && <p>Please correct the form errors.</p>}
         </div>
       </form>
     </div>
