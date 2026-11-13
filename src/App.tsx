@@ -1,4 +1,4 @@
-import { ContactPage, ContactPageAction } from './ContackPage';
+import { ContactPage } from './ContackPage';
 import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom';
 import { ThankYou } from './ThankYou';
 
@@ -10,7 +10,7 @@ const myRouterTree = createBrowserRouter([
   {
     path: '/contact',
     element: <ContactPage />,
-    action: ContactPageAction,
+    //action: ContactPageAction,
   },
   {
     path: '/thankyou/:name',
