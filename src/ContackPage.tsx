@@ -24,7 +24,7 @@ export function ContactPage() {
     console.log('Submitted details:', data);
   };
 
-  function getEditorStyle(email: FieldError | undefined): import("react").ReactNode {
+  function getEditorStyle(email: FieldError | undefined): import('react').ReactNode {
     throw new Error('Function not implemented.');
   }
 
